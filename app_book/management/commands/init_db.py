@@ -1,5 +1,6 @@
 from tqdm import tqdm
 from random import choice, randint
+from faker import Faker
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -9,6 +10,8 @@ from app_book.models import Book, Publisher, Category
 PASSWORD = 'asdf@1234'
 User = get_user_model()
 format_choices = ['pdf', 'epub', 'mp3']
+fake = Faker()
+
 
 class Command(BaseCommand):
     help = "Closes the specified poll for voting"
@@ -23,7 +26,12 @@ class Command(BaseCommand):
 
         users = []
         for i in tqdm(range(1, 10), 'Creating users'):
-            user = User.objects.create_user(username=f'user{i}', password=PASSWORD)
+            user = User.objects.create_user(
+                username=f'user{i}',
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
+                password=PASSWORD
+            )
             users.append(user)
         
         publishers = []
@@ -44,7 +52,7 @@ class Command(BaseCommand):
                 price=randint(100, 1000),
                 format=choice(format_choices),
                 size=randint(3, 10),
-                publish_date=timezone.now(),
+                publish_date=fake.date_between(start_date='-30y', end_date='today'),
                 page_count=randint(50, 1000),
                 duration=randint(100, 300)
             )
