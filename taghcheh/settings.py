@@ -125,4 +125,4 @@ STATIC_ROOT = 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ALLOWED_HOSTS = ['1tapciran.pythonanywhere.com']
+ALLOWED_HOSTS = ['1tapciran.pythonanywhere.com', '127.0.0.1']
